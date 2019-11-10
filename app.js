@@ -22,6 +22,9 @@ const mongoose = require('./helper/db')();
 const config =  require('./config');
 app.set('app_api_key', config.app_api_key);
 
+app.use('/api', tokenVerifyMiddleware)
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -33,7 +36,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', apiKeyMiddleware, indexRouter);
-app.use('/api', tokenVerifyMiddleware)
 app.use('/api/orders', orderRouter);
 app.use('/api/user', userRouter);
 

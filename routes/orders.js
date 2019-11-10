@@ -21,7 +21,7 @@ router.post('/', (req, res, next) => {
 
     const { order_note, customer_id, order_date } = req.body;
 
-    res.json(req.body);
+    res.json(req.decoded);
 
 });
 
