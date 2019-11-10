@@ -4,24 +4,29 @@ const Schema = mongoose.Schema;
 const UserModel = new Schema({
     name:{
         type:String,
-        required:[true, 'Lutfen isminizi girin']
+        required:[true, 'Lutfen isminizi girin'],
+        maxLength:[50, 'Maximum 50 karakter giriniz']
     },
     username:{
         type:String,
         unique:true,
-        required:[true, 'Lutfen e-posta girin']
+        required:[true, 'Lutfen e-posta girin'],
+        maxLength:[50, 'Maximum 50 karakter giriniz']
     },
-    user_password:{
+    password:{
         type:String,
         required:[true, 'Lutfen sifre girin']
     },
-    user_phone:{
+    phone:{
         type:String,
         unique: true,
-        required:[true, 'Lutfen telefon numarasi girin']
+        required:[true, 'Lutfen telefon numarasi girin'],
+        minlength:[10, 'Lutfen gercek numara girin'],
+        maxLength:[11, 'Lutfen gercek numara girin'],
     },
-    user_address:{
-        type:String
+    address:{
+        type:String,
+        maxLength:[300, 'Fazla uzun adres']
     },
     createdAt:{
         type:Date,

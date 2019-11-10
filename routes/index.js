@@ -1,9 +1,15 @@
 var express = require('express');
 var router = express.Router();
 
+// socket.io
 const socketApi = require('../src/socketApi');
 
-/* GET home page. */
+// jwt
+const jwt = require('jsonwebtoken');
+
+// bcrypt
+const bcrypt = require('bcryptjs');
+
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 
@@ -18,5 +24,32 @@ router.get('/', function(req, res, next) {
     }});
 
 });
+
+/*
+    this router register a user to database
+ */
+
+router.post('/register', (req, res, next) => {
+
+    const { name, username, password, address, phone } = req.body;
+
+    bcrypt.genSalt(10, (err, salt) => {
+       bcrypt.hash(password, salt, (err, hash) => {
+
+       });
+    });
+
+});
+
+/*
+    this router authenticate a user
+ */
+
+router.post('/authenticate', (req, res, next) => {
+
+
+
+});
+
 
 module.exports = router;
