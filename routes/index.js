@@ -36,6 +36,8 @@ router.post('/register', async (req, res, next) => {
 
     const { name, username, password, address, phone } = req.body;
 
+
+
     try{
         const user = await User.findOne({$or: [{username}, {phone}]});
 

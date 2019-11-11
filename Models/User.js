@@ -28,6 +28,10 @@ const UserModel = new Schema({
         type:String,
         maxLength:[300, 'Fazla uzun adres']
     },
+    user_push_token:{
+        type:Number,
+        default:null
+    },
     createdAt:{
         type:Date,
         default:Date.now

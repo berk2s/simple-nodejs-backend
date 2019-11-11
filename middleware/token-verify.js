@@ -15,16 +15,15 @@ module.exports = (req, res, next) => {
     }
 
     jwt.verify(token, req.app.get('app_api_key'), (err, decoded) => {
-       if(err){
+       if(err) {
            res.json(err);
-
-       }else{
+           return false;
+       }
 
            req.decoded = decoded;
            //console.log('token', decoded);
            next();
 
-       }
     });
 };
 
