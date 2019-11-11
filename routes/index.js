@@ -92,10 +92,12 @@ router.post('/authenticate', (req, res, next) => {
     const { username, password } = req.body;
 
     const promise = User.findOne({username});
-
+    console.log('burasi4', req)
     promise
         .then((user) => {
+            console.log('burasi3')
             if(!user){
+                console.log('burasi2', username, password)
                 res.json({
                     message:'invalid username!',
                     status:{
@@ -109,6 +111,7 @@ router.post('/authenticate', (req, res, next) => {
             bcrypt.compare(password, user.password)
                 .then((result) => {
                     if(!result){
+                        console.log('burasi1')
                         res.json({
                             message:'invalid password!',
                             status:{
@@ -122,7 +125,7 @@ router.post('/authenticate', (req, res, next) => {
                     const payload = {username};
 
                     const token = jwt.sign(payload, req.app.get('app_api_key'), {});
-
+                    console.log('burasi')
                     res.json({
                         message:'successful!',
                         status:{

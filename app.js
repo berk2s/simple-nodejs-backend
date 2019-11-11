@@ -15,6 +15,12 @@ const tokenVerifyMiddleware = require('./middleware/token-verify');
 
 var app = express();
 
+// for the api security other sites
+var cors = require("cors")
+app.use(cors());
+
+
+
 //mongodb
 const mongoose = require('./helper/db')();
 
@@ -28,6 +34,7 @@ app.use('/api', tokenVerifyMiddleware)
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
 
 app.use(logger('dev'));
 app.use(express.json());
