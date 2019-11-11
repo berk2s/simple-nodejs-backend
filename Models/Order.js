@@ -15,7 +15,7 @@ const OrderModel = new Schema({
         default:dateTurkey._d
     },
     order_status:{
-        type:Number,
+        type:Number, // -1 : cancel , 0: not seen, 1 : hibernate , 2 : phone called , 3 : delivered
         default: 0
     }
 });

@@ -55,7 +55,12 @@ router.post('/', async (req, res, next) => {
 
     try{
         const order = await order_.save();
-
+        const count_1 = await Order.find({order_status:-1}).count();
+        const count_2 = await Order.find({order_status:0}).count();
+        const count_3 = await Order.find({order_status:1}).count();
+        const count_4 = await Order.find({order_status:2}).count();
+        const count_5 = await Order.find({order_status:3}).count();
+        socketApi.io.emit('changedTotalUnrecognizedOrders', {count_1, count_2, count_3, count_4, count_5});
         socketApi.io.emit('newOrder', {order});
 
         res.json(order);
@@ -65,9 +70,184 @@ router.post('/', async (req, res, next) => {
 
 });
 
+router.put('/status/cancel/', (req, res, next) => {
+    const { order_id } = req.body;
+
+    const update = Order.findByIdAndUpdate({_id: order_id}, {order_status:-1}, {new:true});
+
+    update
+       .then(async (data) => {
+          if(!data){
+             res.json({
+                 message:'Ilgili siparis bulunamadi!'
+             });
+          }else{
+              socketApi.io.emit('changedOrderStatus', {status: data.order_status, order_id: data._id})
+              const count_1 = await Order.find({order_status:-1}).count();
+              const count_2 = await Order.find({order_status:0}).count();
+              const count_3 = await Order.find({order_status:1}).count();
+              const count_4 = await Order.find({order_status:2}).count();
+              const count_5 = await Order.find({order_status:3}).count();
+              socketApi.io.emit('changedTotalCanceledOrders', {count_1, count_2, count_3, count_4, count_5});
+             res.json({
+                 message:'Ilgili siparis iptal edildi!',
+              });
+          }
+       })
+      .catch(err => res.json(err))
+
+});
+
+router.put('/status/delivered', (req, res, next) => {
+    const { order_id } = req.body;
+
+    const update = Order.findByIdAndUpdate({_id: order_id}, {order_status:3}, {new:true});
+
+    update
+        .then(async (data) => {
+            if(!data){
+                res.json({
+                    message:'Ilgili siparis bulunamadi!'
+                });
+            }else{
+                socketApi.io.emit('changedOrderStatus', {status: data.order_status, order_id: data._id});
+                const count_1 = await Order.find({order_status:-1}).count();
+                const count_2 = await Order.find({order_status:0}).count();
+                const count_3 = await Order.find({order_status:1}).count();
+                const count_4 = await Order.find({order_status:2}).count();
+                const count_5 = await Order.find({order_status:3}).count();
+                socketApi.io.emit('changedTotalCanceledOrders', {count_1, count_2, count_3, count_4, count_5});
+                res.json({
+                    message:'Ilgili siparisin durumu basarili olarak degistirildi!'
+                });
+            }
+        })
+        .catch(err => res.json(err))
+})
+
+router.put('/status/called', (req, res, next) => {
+    const { order_id } = req.body;
+
+    const update = Order.findByIdAndUpdate({_id: order_id}, {order_status:2}, {new:true});
+
+    update
+        .then(async (data) => {
+            if(!data){
+                res.json({
+                    message:'Ilgili siparis bulunamadi!'
+                });
+            }else{
+                socketApi.io.emit('changedOrderStatus', {status: data.order_status, order_id: data._id})
+                const count_1 = await Order.find({order_status:-1}).count();
+                const count_2 = await Order.find({order_status:0}).count();
+                const count_3 = await Order.find({order_status:1}).count();
+                const count_4 = await Order.find({order_status:2}).count();
+                const count_5 = await Order.find({order_status:3}).count();
+                socketApi.io.emit('changedTotalCanceledOrders', {count_1, count_2, count_3, count_4, count_5});
+                res.json({
+                    message:'Ilgili siparisin durumu gorusuldu olarak degistirildi!'
+                });
+            }
+        })
+        .catch(err => res.json(err))
+})
+
+router.put('/status/hibernate', (req, res, next) => {
+    const { order_id } = req.body;
+
+    const update = Order.findByIdAndUpdate({_id: order_id}, {order_status:1}, {new:true});
+
+    update
+        .then(async (data) => {
+            if(!data){
+                res.json({
+                    message:'Ilgili siparis bulunamadi!'
+                });
+            }else{
+                socketApi.io.emit('changedOrderStatus', {status: data.order_status, order_id: data._id})
+                const count_1 = await Order.find({order_status:-1}).count();
+                const count_2 = await Order.find({order_status:0}).count();
+                const count_3 = await Order.find({order_status:1}).count();
+                const count_4 = await Order.find({order_status:2}).count();
+                const count_5 = await Order.find({order_status:3}).count();
+                socketApi.io.emit('changedTotalCanceledOrders', {count_1, count_2, count_3, count_4, count_5});
+                res.json({
+                    message:'Ilgili siparisin durumu beklemede olarak degistirildi!'
+                });
+            }
+        })
+        .catch(err => res.json(err))
+})
+
+router.get('/count/hibernates', async (req, res) => {
+    try{
+        const orders = await Order.find({order_status:1}).count();
+        res.json({
+            count: orders
+        });
+    }catch(e){
+        res.json(e);
+    }
+})
+
+router.get('/count/called', async (req, res) => {
+    try{
+        const orders = await Order.find({order_status:2}).count();
+        res.json({
+            count: orders
+        });
+    }catch(e){
+        res.json(e);
+    }
+})
+
+router.get('/count/canceled', async (req, res) => {
+    try{
+        const orders = await Order.find({order_status:-1}).count();
+        res.json({
+            count: orders
+        });
+    }catch(e){
+        res.json(e);
+    }
+})
+
+router.get('/count/delivered', async (req, res) => {
+    try{
+        const orders = await Order.find({order_status:3}).count();
+        res.json({
+            count: orders
+        });
+    }catch(e){
+        res.json(e);
+    }
+})
+
+router.get('/count/unrecognised', async (req, res) => {
+    try{
+        const orders = await Order.find({order_status:0}).count();
+        res.json({
+            count: orders
+        });
+    }catch(e){
+        res.json(e);
+    }
+})
+
+router.get('/lastorder', async (req, res) => {
+    try{
+        const order = await Order.find()
+            .sort({$natural: -1})
+            .limit(1);
+        res.json(order);
+    }catch (e) {
+        res.json(e)
+    }
+})
+
 router.get('/notcheckeds', async (req, res) => {
    try{
-       const notCheckeds = await Order.find({order_status:0});
+       const notCheckeds = await Order.find({$or: [{order_status:0}, {order_status:1}, {order_status:2}]});
        res.json(notCheckeds);
    }catch(e){
        res.json(e);
