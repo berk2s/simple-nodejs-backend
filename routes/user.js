@@ -62,6 +62,19 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/:user_id', async (req, res) => {
+
+    const {user_id} = req.params;
+
+    try{
+        const user = await User.findOne({_id:user_id});
+        res.json(user);
+    }catch(e){
+        res.json(e);
+    }
+})
+
+
 router.get('/orders/:user_id', async (req, res) => {
     const {user_id} = req.params;
     try{

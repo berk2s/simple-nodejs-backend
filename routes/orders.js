@@ -4,6 +4,10 @@ const router = express.Router();
 // relevant model
 const Order = require('../Models/Order');
 
+// socket.io
+const socketApi = require('../src/socketApi');
+
+
 /*
     this route returns all orders with customer fields
  */
@@ -40,14 +44,21 @@ router.post('/', async (req, res, next) => {
 
     const { order_note, customer_id } = req.body;
 
-    const order = new Order({
+    const moment = require('moment-timezone');
+    const dateTurkey = moment.tz(Date.now(), "Europe/Istanbul");
+
+    const order_ = new Order({
         order_note,
         customer_id,
+        order_date: dateTurkey._d
     })
 
     try{
-        const orderSave = await order.save();
-        res.json(orderSave);
+        const order = await order_.save();
+
+        socketApi.io.emit('newOrder', {order});
+
+        res.json(order);
     }catch(e){
         res.json(e);
     }
