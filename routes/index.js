@@ -42,7 +42,7 @@ router.post('/register', async (req, res, next) => {
                 whichOne = 'phone';
 
             res.json({
-                error:'duplicate user!',
+                message:'duplicate user!',
                 status:{
                     state:false,
                     code:'R0',
@@ -66,7 +66,13 @@ router.post('/register', async (req, res, next) => {
 
                 try {
                     const data = await user.save();
-                    res.json(data);
+                    res.json({
+                        message:'succesfull!',
+                        status:{
+                            state:true,
+                            code:'R1',
+                        }
+                    });
                 }catch(e){
                     res.json(e);
                 }

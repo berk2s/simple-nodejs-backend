@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const UserModel = new Schema({
     name:{
         type:String,
-        required:[true, 'Lutfen isminizi girin'],
         maxLength:[50, 'Maximum 50 karakter giriniz']
     },
     username:{
