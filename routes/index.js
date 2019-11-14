@@ -89,6 +89,55 @@ router.post('/register', async (req, res, next) => {
 
 });
 
+
+router.post('/check', async (req, res, next) => {
+
+    const { name, username, password, address, phone } = req.body;
+
+
+
+    try{
+        const user = await User.findOne({$or: [{username}, {phone}]});
+
+        if(user){
+            let whichOne = null;
+
+            if(user.username == username && user.phone == phone)
+                whichOne = 'both'
+            else if(user.username == username)
+                whichOne = 'username'
+            else
+                whichOne = 'phone';
+
+            res.json({
+                message:'duplicate user!',
+                status:{
+                    state:false,
+                    code:'R0',
+                    whichOne
+                }
+            })
+
+            return false;
+        }
+
+        res.json({
+            message:'succesfull!',
+            status:{
+                state:true,
+                code:'R1',
+            }
+        });
+
+    }catch(e){
+        res.json(e);
+    }
+
+
+
+});
+
+
 /*
     this router authenticate a user
  */
