@@ -186,7 +186,8 @@ router.post('/authenticate', (req, res, next) => {
                         status:{
                             state:true,
                             code:'A2',
-                            token
+                            token,
+                            user
                         }
                     })
 
