@@ -187,7 +187,7 @@ router.post('/authenticate', (req, res, next) => {
                             state:true,
                             code:'A2',
                             token,
-                            user
+                            user_id: user._id
                         }
                     })
 
