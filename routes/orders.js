@@ -279,7 +279,7 @@ router.get('/notcheckeds', async (req, res) => {
 
 router.get('/checkeds', async (req, res) => {
    try{
-       const checkeds = await Order.find({order_status:1})
+       const checkeds = await Order.find({order_status:3})
            .sort({"order_date":-1});;
        res.json(checkeds);
    }catch(e){
