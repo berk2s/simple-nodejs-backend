@@ -23,12 +23,18 @@ router.get('/', async (req, res, next) => {
                     as:'customer'
                 }
             },
+
             {
                 $unwind:{
                     path:'$customer'
                 }
+            },
+            {
+                $sort: {
+                    order_date:-1
+                }
             }
-        ]).sort({order_date:-1});
+        ]);
         res.json(orders);
     }catch(e){
         res.json(e);
