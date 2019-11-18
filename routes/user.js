@@ -129,7 +129,7 @@ router.post('/repass', async (req, res) => {
                     })
                 }else{
 
-                    alert('sds')
+                    res.json({'asd':'qer'})
 
                 }
 
