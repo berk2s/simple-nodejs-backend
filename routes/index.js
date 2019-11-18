@@ -179,7 +179,9 @@ router.post('/authenticate', (req, res, next) => {
 
                     const payload = {username};
 
-                    const token = jwt.sign(payload, req.app.get('app_api_key'), {});
+                    const token = jwt.sign(payload, req.app.get('app_api_key'), {
+                        expiresIn: '365d'
+                    });
                     console.log('burasi')
                     res.json({
                         message:'successful!',
