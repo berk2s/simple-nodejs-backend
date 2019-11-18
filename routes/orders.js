@@ -63,7 +63,13 @@ router.post('/', async (req, res, next) => {
         socketApi.io.emit('changedTotalUnrecognizedOrders', {count_1, count_2, count_3, count_4, count_5});
         socketApi.io.emit('newOrder', {order});
 
-        res.json(order);
+        res.json({
+            order:order,
+            state:{
+                code:'O1',
+                status:true
+            }
+        });
     }catch(e){
         res.json(e);
     }
