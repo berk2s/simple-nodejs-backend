@@ -115,7 +115,7 @@ router.post('/repass', async (req, res) => {
     const {user_id, pass} = req.body;
 
     try{
-        const userInfo = await User.find({_id:user_id});
+        const userInfo = await UserUser.findOne({_id:user_id});
 
         bcrypt.compare(pass, userInfo.password)
             .then((result) => {
@@ -133,7 +133,7 @@ router.post('/repass', async (req, res) => {
                         bcrypt.hash(pass, salt, async (err, hash) => {
 
                             try{
-                                const user = await User.findByIdAndUpdate({_id: userInfo._id}, {password:hash}, {new:true});
+                                const user = User.findByIdAndUpdate({_id: userInfo._id}, {password:hash}, {new:true});
 
                                 res.json({
                                     user,
