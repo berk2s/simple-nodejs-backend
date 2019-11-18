@@ -132,27 +132,7 @@ router.post('/repass', async (req, res) => {
                     bcrypt.genSalt(10, (err, salt) => {
                         bcrypt.hash(pass, salt, async (err, hash) => {
 
-                            try{
-                                const user = await User.findByIdAndUpdate({_id: user_id}, {password:hash}, {new:true});
-
-                                res.json({
-                                    user,
-                                    state:{
-                                        code:'U1',
-                                        status:true,
-                                        hash
-                                    }
-                                });
-                            }catch(e){
-                                res.json({
-                                    user,
-                                    state:{
-                                        code:'U1',
-                                        status:true,
-                                        e
-                                    }
-                                });
-                            }
+                            res.json(hash);
 
                         });
                     });
