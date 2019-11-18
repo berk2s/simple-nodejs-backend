@@ -127,26 +127,11 @@ router.post('/repass', async (req, res) => {
                             status:true
                         }
                     })
-                    return false;
+                }else{
+
+                    alert('sds')
+
                 }
-
-
-                bcrypt.genSalt(10, (err, salt) => {
-                    bcrypt.hash(pass, salt, async (err, hash) => {
-
-                        const user = await User.findByIdAndUpdate({_id: user_id}, {password:hash}, {new:true});
-
-                        res.json({
-                            user,
-                            state:{
-                                code:'U1',
-                                status:true,
-                                hash
-                            }
-                        });
-
-                    });
-                });
 
             })
 
