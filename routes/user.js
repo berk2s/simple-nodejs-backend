@@ -88,7 +88,9 @@ router.get('/orders/:user_id', async (req, res) => {
 router.get('/orders/notcheckeds/:user_id', async (req, res) => {
    const {user_id} = req.params;
    try{
-       const usersNotCheckeds = await Order.find({customer_id:user_id, $or:[{order_status:1}, {order_status:2}, {order_status:0}]});
+       const usersNotCheckeds = await Order
+           .find({customer_id:user_id, $or:[{order_status:1}, {order_status:2}, {order_status:0}]})
+           .sort({"order_date": -1})
        res.json(usersNotCheckeds);
    }catch(e){
        res.json(e);
