@@ -122,6 +122,9 @@ router.post('/repass', async (req, res) => {
                 if(!result){
                     res.json({
                         message:'Mevcut sifre yanlis!',
+                        pass1: userInfo.password,
+                        pass2: pass,
+                        result:result,
                         state:{
                             code:'U0',
                             status:true
