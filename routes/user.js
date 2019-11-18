@@ -107,9 +107,9 @@ router.get('/orders/success/:user_id', async (req, res) => {
     }
 });
 
-router.get('/repass/:user_id', async (req, res) => {
+router.post('/repass', async (req, res) => {
 
-    const {user_id, pass} = req.params;
+    const {user_id, pass} = req.body;
 
     try{
         const user = await User.findByIdAndUpdate({_id: user_id}, {password:pass}, {new:true});
