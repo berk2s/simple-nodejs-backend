@@ -4,6 +4,9 @@ const router = express.Router();
 // model
 const User = require('../Models/User');
 
+const bcrypt = require('bcryptjs');
+
+
 // orders
 const Order = require('../Models/Order');
 /*
@@ -112,15 +115,40 @@ router.post('/repass', async (req, res) => {
     const {user_id, pass} = req.body;
 
     try{
-        const user = await User.findByIdAndUpdate({_id: user_id}, {password:pass}, {new:true});
+        const userInfo = await User.find({_id:user_id});
 
-        res.json({
-            user,
-            state:{
-                code:'U1',
-                status:true
-            }
-        });
+        bcrypt.compare(pass, userInfo.password)
+            .then((result) => {
+                if(!result){
+                    res.json({
+                        message:'Mevcut sifre yanlis!',
+                        state:{
+                            code:'U0',
+                            status:true
+                        }
+                    })
+                    return false;
+                }
+
+
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(pass, salt, async (err, hash) => {
+
+                        const user = await User.findByIdAndUpdate({_id: user_id}, {password:hash}, {new:true});
+
+                        res.json({
+                            user,
+                            state:{
+                                code:'U1',
+                                status:true,
+                                hash
+                            }
+                        });
+
+                    });
+                });
+
+            })
 
     }catch(e){
         res.json(e);
