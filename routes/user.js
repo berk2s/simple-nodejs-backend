@@ -144,7 +144,14 @@ router.post('/repass', async (req, res) => {
                                     }
                                 });
                             }catch(e){
-                                alert(e)
+                                res.json({
+                                    user,
+                                    state:{
+                                        code:'U1',
+                                        status:true,
+                                        e
+                                    }
+                                });
                             }
 
                         });
