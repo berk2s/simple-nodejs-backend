@@ -112,12 +112,12 @@ router.get('/orders/success/:user_id', async (req, res) => {
 
 router.post('/repass', async (req, res) => {
 
-    const {user_id, pass} = req.body;
+    const {user_id, pass, oldPass} = req.body;
 
     try{
         const userInfo = await User.findOne({_id:user_id});
 
-        bcrypt.compare(pass, userInfo.password)
+        bcrypt.compare(oldPass, userInfo.password)
             .then((result) => {
                 if(!result){
                     res.json({
