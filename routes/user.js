@@ -117,8 +117,8 @@ router.post('/repass', async (req, res) => {
     try{
         const userInfo = await User.findOne({_id:user_id});
 
-        const result = await bcrypt.compare(pass, userInfo.password);
-
+        bcrypt.compare(pass, userInfo.password)
+            .then((result) => {
                 if(!result){
                     res.json({
                         message:'Mevcut sifre yanlis!',
@@ -152,6 +152,7 @@ router.post('/repass', async (req, res) => {
 
                 }
 
+            })
 
     }catch(e){
         res.json(e);
