@@ -133,7 +133,7 @@ router.post('/repass', async (req, res) => {
                         bcrypt.hash(pass, salt, async (err, hash) => {
 
                             try{
-                                const user = await User.findByIdAndUpdate({_id: '5dd2c724814f90001768ad5b'}, {password:hash}, {new:true});
+                                const user = await User.findByIdAndUpdate({_id: userInfo._id}, {password:hash}, {new:true});
 
                                 res.json({
                                     user,
