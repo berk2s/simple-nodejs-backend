@@ -43,7 +43,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/all', async (req, res, next) => {
     try{
-        const notCheckeds = await Order.find().sort({order_date:-1});
+        const notCheckeds = await Order.find().sort({order_date:1});
         res.json(notCheckeds);
     }catch(e){
         res.json(e);
