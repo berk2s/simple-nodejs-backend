@@ -107,5 +107,26 @@ router.get('/orders/success/:user_id', async (req, res) => {
     }
 });
 
+router.get('/repass/:user_id', async (req, res) => {
+
+    const {user_id, pass} = req.params;
+
+    try{
+        const user = await User.findByIdAndUpdate({_id: user_id}, {password:pass}, {new:true});
+
+        res.json({
+            user,
+            state:{
+                code:'U1',
+                status:true
+            }
+        });
+
+    }catch(e){
+        res.json(e);
+    }
+})
+
+
 
 module.exports = router;
