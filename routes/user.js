@@ -115,10 +115,10 @@ router.post('/repass', async (req, res) => {
     const {user_id, pass} = req.body;
 
     try{
-        const userInfo = await UserUser.findOne({_id:user_id});
+        const userInfo = await User.findOne({_id:user_id});
 
-        bcrypt.compare(pass, userInfo.password)
-            .then((result) => {
+        const result = await bcrypt.compare(pass, userInfo.password);
+
                 if(!result){
                     res.json({
                         message:'Mevcut sifre yanlis!',
@@ -136,21 +136,15 @@ router.post('/repass', async (req, res) => {
                                 const user = await User.findByIdAndUpdate({_id: userInfo._id}, {password:hash}, {new:true});
 
                                 res.json({
-                                    user,
+                                    user:user,
                                     state:{
                                         code:'U1',
                                         status:true,
-                                        hash
+                                        hash:hash
                                     }
                                 });
                             }catch(e){
-                                res.json({
-                                    state:{
-                                        code:'U1',
-                                        status:true,
-                                        e
-                                    }
-                                });
+                                res.json(e);
                             }
 
                         });
@@ -158,7 +152,6 @@ router.post('/repass', async (req, res) => {
 
                 }
 
-            })
 
     }catch(e){
         res.json(e);
