@@ -122,7 +122,9 @@ router.put('/status/cancel/', (req, res, next) => {
 router.put('/status/delivered', (req, res, next) => {
     const { order_id } = req.body;
 
-    const update = Order.findByIdAndUpdate({_id: order_id}, {order_status:3}, {new:true});
+    const update = Order
+        .findByIdAndUpdate({_id: order_id}, {order_status:3}, {new:true})
+        .sort({"order_date":-1});
 
     update
         .then(async (data) => {
