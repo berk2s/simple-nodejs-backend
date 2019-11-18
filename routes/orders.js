@@ -41,6 +41,15 @@ router.get('/', async (req, res, next) => {
     }
 });
 
+router.get('/all', async (req, res, next) => {
+    try{
+        const notCheckeds = await Order.find().sort({order_date:-1});
+        res.json(notCheckeds);
+    }catch(e){
+        res.json(e);
+    }
+});
+
 /*
     this route insert a order to db
     even emits socket
