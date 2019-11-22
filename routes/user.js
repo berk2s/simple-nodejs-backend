@@ -85,7 +85,7 @@ router.put('/update', async (req, res) => {
         const user = await User.findOne({username:userName});
         const userPhone = await User.findOne({phone:phone});
 
-        if(realUser.username != username) {
+        if(realUser.username != userName) {
             if (user) {
                 res.json({
                     message: 'Boyle bir kullanici adi mevcut!',
