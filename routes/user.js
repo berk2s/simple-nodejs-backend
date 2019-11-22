@@ -152,7 +152,7 @@ router.get('/adress/:user_id', async (req, res) => {
    const {user_id} = req.params;
 
     try{
-        const user = await Adress.findOne({user_id:user_id});
+        const user = await Adress.find({user_id:user_id});
         res.json(user);
     }catch(e){
         res.json(e);
