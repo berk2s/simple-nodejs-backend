@@ -77,6 +77,24 @@ router.get('/:user_id', async (req, res) => {
     }
 })
 
+router.put('/update', async (req, res) => {
+    const { userName, phone, userID } = req.body;
+
+    try {
+        const update = await Order.findByIdAndUpdate({_id: userID}, {username: userName, phone: phone}, {new: true});
+        res.json({
+            message:'update is succesfull!',
+            status:{
+                state:false,
+                code:'U1',
+                update
+            }
+        })
+    }catch(e){
+        res.json(e);
+    }
+});
+
 
 router.get('/orders/:user_id', async (req, res) => {
     const {user_id} = req.params;
