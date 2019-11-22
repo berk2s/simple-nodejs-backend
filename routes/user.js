@@ -81,29 +81,34 @@ router.put('/update', async (req, res) => {
     const { userName, phone, userID } = req.body;
 
     try {
+        const realUser = await User.findOne({_id:userID});
         const user = await User.findOne({username:userName});
         const userPhone = await User.findOne({phone:phone});
 
-        if(user){
-            res.json({
-                message:'Boyle bir kullanici adi mevcut!',
-                status:{
-                    state:false,
-                    code:'U0',
-                }
-            })
-            return false;
+        if(realUser.username != username) {
+            if (user) {
+                res.json({
+                    message: 'Boyle bir kullanici adi mevcut!',
+                    status: {
+                        state: false,
+                        code: 'U0',
+                    }
+                })
+                return false;
+            }
         }
 
-        if(userPhone){
-            res.json({
-                message:'Boyle bir telefon numarasi mevcut!',
-                status:{
-                    state:false,
-                    code:'U2',
-                }
-            })
-            return false;
+        if(realUser.phone != phone) {
+            if (userPhone) {
+                res.json({
+                    message: 'Boyle bir telefon numarasi mevcut!',
+                    status: {
+                        state: false,
+                        code: 'U2',
+                    }
+                })
+                return false;
+            }
         }
 
         const update = await User.findByIdAndUpdate({_id: userID}, {username: userName, phone: phone}, {new: true});
