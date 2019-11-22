@@ -3,6 +3,7 @@ const router = express.Router();
 
 // model
 const User = require('../Models/User');
+const Adress = require('../Models/Adress');
 
 const bcrypt = require('bcryptjs');
 
@@ -30,6 +31,24 @@ router.get('/', async (req, res) => {
                     preserveNullAndEmptyArrays: true
                 }
             },
+
+
+            {
+                $lookup:{
+                    from:'adress',
+                    localField:'_id',
+                    foreignField:'user_id',
+                    as:'adresses'
+                }
+            },
+            {
+                $unwind:{
+                    path:'$adresses',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+
+
             {
                 $group:{
                     _id:{
@@ -42,6 +61,9 @@ router.get('/', async (req, res) => {
                     },
                     orders:{
                         $push:'$orders'
+                    },
+                    adresses:{
+                        $push:'$adresses'
                     }
                 }
             },
@@ -53,7 +75,8 @@ router.get('/', async (req, res) => {
                     password:'$_id.password',
                     phone:'$_id.phone',
                     address:'$_id.address',
-                    orders:'$orders'
+                    orders:'$orders',
+                    adresses:'$adresses'
                 }
             }
 
@@ -125,6 +148,16 @@ router.put('/update', async (req, res) => {
     }
 });
 
+router.get('/adress/:user_id', async (req, res) => {
+   const {user_id} = req.params;
+
+    try{
+        const user = await User.findOne({user_id:user_id});
+        res.json(user);
+    }catch(e){
+        res.json(e);
+    }
+});
 
 router.get('/orders/:user_id', async (req, res) => {
     const {user_id} = req.params;
