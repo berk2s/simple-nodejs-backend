@@ -168,7 +168,7 @@ router.post('/adress', async (req, res) => {
             adress: adress,
             adress_note: adress_note
         });
-        user.save();
+        adres.save();
         res.json({
             message: 'Basarili bir sekilde adres eklendi!',
             status: {
