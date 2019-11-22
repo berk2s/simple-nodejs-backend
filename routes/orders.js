@@ -16,21 +16,6 @@ router.get('/', async (req, res, next) => {
     try{
         const orders = await Order.aggregate([
             {
-                $lookup:{
-                    from:'users',
-                    localField:'customer_id',
-                    foreignField:'_id',
-                    as:'customer'
-                }
-            },
-
-            {
-                $unwind:{
-                    path:'$customer',
-                    preserveNullAndEmptyArrays:true
-                }
-            },
-            {
                 $sort: {
                     order_date:-1
                 }
