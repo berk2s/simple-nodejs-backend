@@ -81,7 +81,7 @@ router.put('/update', async (req, res) => {
     const { userName, phone, userID } = req.body;
 
     try {
-        const update = await Order.findByIdAndUpdate({_id: userID}, { "$set": { username: userName, phone: phone }}, {new: true});
+        const update = await Order.findByIdAndUpdate({_id: userID}, { "$set": { "username": userName, "phone": phone }}, {new: true});
         res.json({
             message:'update is succesfull! veriler:'+userName+' '+phone+' '+userID,
             status:{
