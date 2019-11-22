@@ -160,15 +160,23 @@ router.get('/adress/:user_id', async (req, res) => {
 });
 
 router.post('/adress', async (req, res) => {
-    const {user_id, adress} = req.body;
+    const {user_id, adress, adress_note} = req.body;
 
     try{
-        const user = await new Adress({
+        const adres = await new Adress({
             user_id:user_id,
-            adress: adress
+            adress: adress,
+            adress_note: adress_note
         });
         user.save();
-        res.json(user);
+        res.json({
+            message: 'Basarili bir sekilde adres eklendi!',
+            status: {
+                state: false,
+                code: 'A0',
+                adres
+            }
+        })
     }catch(e){
         res.json(e);
     }

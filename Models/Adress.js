@@ -8,6 +8,11 @@ const AdressModel = new Schema({
         required:[true, 'Lutfen adresin girin'],
         min:[3, 'Kisa Adres'],
         max:[100, 'Uzun Adres']
+    },
+    adress_note:{
+        type:String,
+        min:[1, 'Kisa Not'],
+        max:[100, 'Uzun Not']
     }
 });
 
