@@ -81,6 +81,19 @@ router.put('/update', async (req, res) => {
     const { userName, phone, userID } = req.body;
 
     try {
+        const user = await User.findOne({username:userName});
+
+        if(user){
+            res.json({
+                message:'Boyle bir kullanici adi mevcut!',
+                status:{
+                    state:false,
+                    code:'U0',
+                }
+            })
+            return false;
+        }
+
         const update = await User.findByIdAndUpdate({_id: userID}, {username: userName, phone: phone}, {new: true});
         res.json({
             message:'update is succesfull! veriler:'+userName+' '+phone+' '+userID,
