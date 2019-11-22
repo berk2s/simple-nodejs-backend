@@ -82,6 +82,7 @@ router.put('/update', async (req, res) => {
 
     try {
         const user = await User.findOne({username:userName});
+        const userPhone = await User.findOne({phone:phone});
 
         if(user){
             res.json({
@@ -89,6 +90,17 @@ router.put('/update', async (req, res) => {
                 status:{
                     state:false,
                     code:'U0',
+                }
+            })
+            return false;
+        }
+
+        if(userPhone){
+            res.json({
+                message:'Boyle bir telefon numarasi mevcut!',
+                status:{
+                    state:false,
+                    code:'U2',
                 }
             })
             return false;
