@@ -83,7 +83,6 @@ router.post('/', async (req, res, next) => {
             state:{
                 code:'O1',
                 status:true
-                order:order_;
             }
         });
     }catch(e){
