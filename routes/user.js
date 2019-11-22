@@ -159,6 +159,22 @@ router.get('/adress/:user_id', async (req, res) => {
     }
 });
 
+router.post('/adress', async (req, res) => {
+    const {user_id, adress} = req.body;
+
+    try{
+        const user = await new Adress({
+            user_id:user_id,
+            adress: adress
+        });
+        user.save();
+        res.json(user);
+    }catch(e){
+        res.json(e);
+    }
+});
+
+
 router.get('/orders/:user_id', async (req, res) => {
     const {user_id} = req.params;
     try{
